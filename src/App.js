@@ -1,11 +1,7 @@
 import { Segment } from 'semantic-ui-react';
-import logo from './logo.svg';
 import './App.css';
-import FormCliente from './views/cliente/FormCliente';
-import FormProduto from './views/produto/FormProduto';
-import FormEntregador from './views/entregador/FormEntregador';
 
-import Rotas from './Rotas';
+import Rotas from './Rotas ';
 
 
 
