@@ -1,8 +1,8 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import InputMask from 'react-input-mask';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 
 import { Button, Container, Divider, Form, Icon, Radio } from 'semantic-ui-react';
@@ -11,6 +11,9 @@ import MenuSistema from '../../MenuSistema';
 
 export default function FormEntregador() {
 
+    const { state } = useLocation();
+
+    const [idEntregador, setIdEntregador] = useState()
     const [nome, setNome] = useState();
     const [cpf, setCpf] = useState();
     const [rg, setRg] = useState();
@@ -27,6 +30,30 @@ export default function FormEntregador() {
     const [enderecoUf, setenderecoUf] = useState();
     const [enderecoCompleto, setenderecoCompleto] = useState();
     const [ativo, setativo] = useState();
+
+    useEffect(() => {
+        if (state != null && state.id != null) {
+            axios.get("http://localhost:8082/api/entregador/" + state.id)
+                .then((response) => {
+                    setIdEntregador(response.data.id)
+                    setNome(response.data.nome)
+                    setCpf(response.data.cpf)
+                    setdataNascimento(response.data.dataNascimento)
+                    setFoneCelular(response.data.foneCelular)
+                    setFoneFixo(response.data.foneFixo)
+                    setqtdEntregasRealizadas(response.data.qtdEntregasRealizadas)
+                    setvalorFrete(response.data.valorFrete)
+                    setenderecoRua(response.data.enderecoRua)
+                    setenderecoNumero(response.data.enderecoNumero)
+                    setenderecoBairro(response.data.enderecoBairro)
+                    setenderecoCidade(response.data.enderecoCidade)
+                    setenderecoCep(response.data.enderecoCep)
+                    setenderecoUf(response.data.enderecoUf)
+                    setenderecoCompleto(response.data.enderecoCompleto)
+                    setativo(response.data.ativo)
+                })
+        }
+    }, [state])
 
 
 
