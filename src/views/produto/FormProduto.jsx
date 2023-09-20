@@ -87,6 +87,7 @@ export default function FormProduto() {
                                     label='Titulo'
                                     maxLength="100"
                                     placeholder="informe o titulo do produto"
+                                    value={titulo}
                                     onChange={e => setTitulo(e.target.value)}
                                 />
 
@@ -96,6 +97,7 @@ export default function FormProduto() {
                                     label='Codigo de produto'
                                     maxLength="100"
                                     placeholder="informe o codigo do produto"
+                                    value={codigo}
                                     onChange={e => setCodigo(e.target.value)}>
                                 </Form.Input>
 
@@ -108,6 +110,7 @@ export default function FormProduto() {
 
                                     label='Descrição'
                                     placeholder="informe a descrição do produto"
+                                    value={descricao}
                                     onChange={e => setDescricao(e.target.value)}>
 
 
@@ -123,6 +126,7 @@ export default function FormProduto() {
                                     fluid
                                     label='Valor Unitário'
                                     width={6}
+                                    value={valorUnitario}
                                     onChange={e => setValorUnitario(e.target.value)}>
 
                                 </Form.Input>
@@ -132,6 +136,7 @@ export default function FormProduto() {
                                     label='Tempo de entrega minímo em minutos'
                                     width={6}
                                     placeholder="30"
+                                    value={tempoEntregaMinimo}
                                     onChange={e => setTempoEntregaMinimo(e.target.value)}>
 
 
@@ -142,6 +147,7 @@ export default function FormProduto() {
                                     label='Tempo de entrega maximo em minutos'
                                     width={6}
                                     placeholder="30"
+                                    value={tempoEntregaMaximo}
                                     onChange={e => setTempoEntregaMaximo(e.target.value)}>
 
 

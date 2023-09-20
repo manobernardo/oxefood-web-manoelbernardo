@@ -18,7 +18,7 @@ export default function FormEntregador() {
     const [cpf, setCpf] = useState();
     const [rg, setRg] = useState();
     const [dataNascimento, setdataNascimento] = useState();
-    const [fonecelular, setFoneCelular] = useState();
+    const [foneCelular, setFoneCelular] = useState();
     const [foneFixo, setFoneFixo] = useState();
     const [qtdEntregasRealizadas, setqtdEntregasRealizadas] = useState();
     const [valorFrete, setvalorFrete] = useState();
@@ -38,7 +38,8 @@ export default function FormEntregador() {
                     setIdEntregador(response.data.id)
                     setNome(response.data.nome)
                     setCpf(response.data.cpf)
-                    setdataNascimento(response.data.dataNascimento)
+                    setRg(response.data.rg)
+                    setdataNascimento(formatarData(response.data.dataNascimento))
                     setFoneCelular(response.data.foneCelular)
                     setFoneFixo(response.data.foneFixo)
                     setqtdEntregasRealizadas(response.data.qtdEntregasRealizadas)
@@ -64,7 +65,7 @@ export default function FormEntregador() {
 		     cpf: cpf,
              rg: rg,
 		     dataNascimento: dataNascimento,
-             fonecelular: fonecelular,
+             foneCelular: foneCelular,
              foneFixo: foneFixo,
              qtdEntregasRealizadas: qtdEntregasRealizadas,
              valorFrete: valorFrete,
@@ -79,17 +80,29 @@ export default function FormEntregador() {
 		     
 		}
 	
-		axios.post("http://localhost:8082/api/entregador", entregadorRequest)
-		.then((response) => {
-		     console.log('Entregador cadastrado com sucesso.')
-		})
-		.catch((error) => {
-		     console.log('Erro ao incluir o um Entregador.')
-             
-		})
+		if (idEntregador != null) { //Alteração:
+            axios.put("http://localhost:8082/api/entregador/" + idEntregador, entregadorRequest)
+                .then((response) => { console.log('Entregador alterado com sucesso.') })
+                .catch((error) => { console.log('Erro ao alter um entregador.') })
+
+        } else { //Cadastro:
+
+            axios.post("http://localhost:8082/api/entregador", entregadorRequest)
+                .then((response) => { console.log('Cliente cadastrado com sucesso.') })
+                .catch((error) => { console.log('Erro ao incluir o cliente.') })
+        }
        
 	}
 
+    function formatarData(dataParam) {
+
+        if (dataParam === null || dataParam === '' || dataParam === undefined) {
+            return ''
+        }
+
+        let arrayData = dataParam.split('-');
+        return arrayData[2] + '/' + arrayData[1] + '/' + arrayData[0];
+    }
     return (
 
         <div>
@@ -168,7 +181,7 @@ export default function FormEntregador() {
                                     label='Fone Celular'>
                                    <InputMask
                                     mask="(99) 9999.9999"
-                                    value={fonecelular}
+                                    value={foneCelular}
                                     onChange={e => setFoneCelular(e.target.value)}
                                 />
                                 </Form.Input>

@@ -24,7 +24,7 @@ export default function FormCliente() {
                     setidCliente(response.data.id)
                     setNome(response.data.nome)
                     setCpf(response.data.cpf)
-                    setDataNascimento(response.data.dataNascimento)
+                    setDataNascimento(formatarData(response.data.dataNascimento))
                     setFoneCelular(response.data.foneCelular)
                     setFoneFixo(response.data.foneFixo)
                 })
@@ -154,7 +154,7 @@ export default function FormCliente() {
                                         maskChar={null}
                                         placeholder="Ex: 20/03/1985"
                                         value={dataNascimento}
-                                        onChange={e => setDataNascimento(formatarData(e.target.value))}
+                                        onChange={e => setDataNascimento(e.target.value)}
                                     />
                                 </Form.Input>
 
