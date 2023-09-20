@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Container, Divider, Icon, Table, Modal, Header } from 'semantic-ui-react';
+import { Button, Container, Divider, Header, Icon, Modal, Table } from 'semantic-ui-react';
 import MenuSistema from '../../MenuSistema';
 
 export default function ListCliente() {
@@ -28,10 +28,12 @@ export default function ListCliente() {
         if (dataParam === null || dataParam === '' || dataParam === undefined) {
             return ''
         }
-
-        let arrayData = dataParam.split('-');
-        return arrayData[2] + '/' + arrayData[1] + '/' + arrayData[0];
+       
+        
+       /*let arrayData = dataParam.split('-');*/
+        return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];
     }
+
 
     function confirmaRemover(id) {
         setOpenModal(true)
