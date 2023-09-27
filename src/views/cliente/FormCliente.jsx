@@ -61,9 +61,10 @@ export default function FormCliente() {
         if (dataParam === null || dataParam === '' || dataParam === undefined) {
             return ''
         }
-
-        let arrayData = dataParam.split('-');
-        return arrayData[2] + '/' + arrayData[1] + '/' + arrayData[0];
+       
+        
+       /*let arrayData = dataParam.split('-');*/
+        return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];
     }
 
 

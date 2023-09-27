@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import InputMask from 'react-input-mask';
 import { Link, useLocation } from "react-router-dom";
@@ -99,9 +99,10 @@ export default function FormEntregador() {
         if (dataParam === null || dataParam === '' || dataParam === undefined) {
             return ''
         }
-
-        let arrayData = dataParam.split('-');
-        return arrayData[2] + '/' + arrayData[1] + '/' + arrayData[0];
+       
+        
+       /*let arrayData = dataParam.split('-');*/
+        return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];
     }
     return (
 
