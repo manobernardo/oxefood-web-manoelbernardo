@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import InputMask from 'react-input-mask';
 import { Link, useLocation } from "react-router-dom";
 import { Button, Container, Divider, Form, Icon } from 'semantic-ui-react';
+import { mensagemErro, notifyError, notifySuccess } from '../util/Util';
+
+
 import MenuSistema from '../../MenuSistema';
 
 
@@ -21,6 +24,7 @@ export default function FormCliente() {
         if (state != null && state.id != null) {
             axios.get("http://localhost:8082/api/cliente/" + state.id)
                 .then((response) => {
+                    
                     setidCliente(response.data.id)
                     setNome(response.data.nome)
                     setCpf(response.data.cpf)
@@ -28,6 +32,8 @@ export default function FormCliente() {
                     setFoneCelular(response.data.foneCelular)
                     setFoneFixo(response.data.foneFixo)
                 })
+                
+                    
         }
     }, [state])
 
@@ -45,14 +51,25 @@ export default function FormCliente() {
 
         if (idCliente != null) { //Alteração:
             axios.put("http://localhost:8082/api/cliente/" + idCliente, clienteRequest)
-                .then((response) => { console.log('Cliente alterado com sucesso.') })
-                .catch((error) => { console.log('Erro ao alter um cliente.') })
-
+                .then((response) => notifySuccess('Cliente alterado com sucesso.'))
+                .catch((error) => {
+                    if (error.response) {
+                    notifyError(error.response.data.errors[0].defaultMessage)
+                    } else {
+                    notifyError(mensagemErro)
+                    } 
+                    })
         } else { //Cadastro:
 
             axios.post("http://localhost:8082/api/cliente", clienteRequest)
-                .then((response) => { console.log('Cliente cadastrado com sucesso.') })
-                .catch((error) => { console.log('Erro ao incluir o cliente.') })
+                .then((response) => notifySuccess('Cliente cadastrado com sucesso.'))
+                .catch((error) => {
+                    if (error.response) {
+                    notifyError(error.response.data.errors[0].defaultMessage)
+                    } else {
+                    notifyError(mensagemErro)
+                    } 
+                    })
         }
 
     }
@@ -82,7 +99,7 @@ export default function FormCliente() {
                     {idCliente === undefined &&
                         <h2> <span style={{ color: 'darkgray' }}> Cliente &nbsp;<Icon name='angle double right' size="small" /> </span> Cadastro</h2>
                     }
-                    {idCliente != undefined &&
+                    {idCliente !== undefined &&
                         <h2> <span style={{ color: 'darkgray' }}> Cliente &nbsp;<Icon name='angle double right' size="small" /> </span> Alteração</h2>
                     }
 

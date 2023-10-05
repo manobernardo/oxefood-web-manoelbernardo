@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Container, Divider, Header, Icon, Modal, Table } from 'semantic-ui-react';
+import { Button, Container, Divider, Header, Icon, Modal, Table, Menu, Segment, Form } from 'semantic-ui-react';
 import MenuSistema from '../../MenuSistema';
 
 export default function ListCliente() {
@@ -9,6 +9,9 @@ export default function ListCliente() {
     const [lista, setLista] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const [idRemover, setIdRemover] = useState();
+    const [menuFiltro, setMenuFiltro] = useState();
+    const [nome, setNome] = useState();
+    const [cpf, setCpf] = useState();
 
 
     useEffect(() => {
@@ -28,9 +31,9 @@ export default function ListCliente() {
         if (dataParam === null || dataParam === '' || dataParam === undefined) {
             return ''
         }
-       
-        
-       /*let arrayData = dataParam.split('-');*/
+
+
+        /*let arrayData = dataParam.split('-');*/
         return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];
     }
 
@@ -43,21 +46,59 @@ export default function ListCliente() {
     async function remover() {
 
         await axios.delete('http://localhost:8082/api/cliente/' + idRemover)
-        .then((response) => {
-  
-            console.log('Cliente removido com sucesso.')
-  
-            axios.get("http://localhost:8082/api/cliente")
+            .then((response) => {
+
+                console.log('Cliente removido com sucesso.')
+
+                axios.get("http://localhost:8082/api/cliente")
+                    .then((response) => {
+                        setLista(response.data)
+                    })
+            })
+            .catch((error) => {
+                console.log('Erro ao remover um cliente.')
+            })
+        setOpenModal(false)
+    }
+    function handleMenuFiltro() {
+
+        if (menuFiltro === true) {
+            setMenuFiltro(false);
+        } else {
+            setMenuFiltro(true);
+        }
+    }
+    function handleChangeNome(value) {
+
+        filtrarClientes(value, cpf);
+    }
+    function handleChangeCPF(value) {
+
+        filtrarClientes(nome, value);
+    }
+
+    async function filtrarClientes(nomeParam, cpfParam,) {
+
+        let formData = new FormData();
+
+        if (nomeParam !== undefined) {
+            setNome(nomeParam)
+            formData.append('nome', nomeParam);
+        }
+        if (cpfParam !== undefined) {
+            setCpf(cpfParam)
+            formData.append('cpf', cpfParam);
+        }
+
+
+        await axios.post("http://localhost:8082/api/cliente/filtrar", formData)
             .then((response) => {
                 setLista(response.data)
             })
-        })
-        .catch((error) => {
-            console.log('Erro ao remover um cliente.')
-        })
-        setOpenModal(false)
     }
- 
+
+
+
 
     return (
         <div>
@@ -70,6 +111,17 @@ export default function ListCliente() {
                     <Divider />
 
                     <div style={{ marginTop: '4%' }}>
+                        <Menu compact>
+                            <Menu.Item
+                                name='menuFiltro'
+                                active={menuFiltro === true}
+                                onClick={() => handleMenuFiltro()}
+                            >
+                                <Icon name='filter' />
+                                Filtrar
+                            </Menu.Item>
+                        </Menu>
+
                         <Button
                             label='Novo'
                             circular
@@ -79,6 +131,38 @@ export default function ListCliente() {
                             as={Link}
                             to='/form-cliente'
                         />
+                        {menuFiltro ?
+
+                            <Segment>
+                                <Form className="form-filtros">
+                                <Form.Group widths='equal'>
+                                    <Form.Input
+                                        icon="search"
+                                        value={nome}
+                                        onChange={e => handleChangeNome(e.target.value)}
+                                        label='Nome do cliente'
+                                        placeholder='Filtrar por nome do cliente'
+                                        labelPosition='left'
+                                        width={4}
+                                    />
+                                
+                                    <Form.Input
+                                        icon="search"
+                                        value={cpf}
+                                        onChange={e => handleChangeCPF(e.target.value)}
+                                        label='Cpf do cliente'
+                                        placeholder='Filtrar por cpf'
+                                        labelPosition='left'
+                                        width={4}
+                                    />
+                                    </Form.Group>
+
+                                </Form>
+                            </Segment> : ""
+                        }
+
+
+
                         <br /><br /><br />
 
                         <Table color='orange' sortable celled>
@@ -133,7 +217,7 @@ export default function ListCliente() {
                         </Table>
                     </div>
                 </Container>
-            </div>
+            </div >
             <Modal
                 basic
                 onClose={() => setOpenModal(false)}
@@ -154,6 +238,6 @@ export default function ListCliente() {
                 </Modal.Actions>
             </Modal>
 
-        </div>
+        </div >
     )
 }
