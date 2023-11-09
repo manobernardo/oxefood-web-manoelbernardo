@@ -20,8 +20,18 @@ class MenuSistema extends React.Component {
                         active={this.state.activeItem === 'home'}
                         onClick={this.handleItemClick}
                         as={Link}
+                        to='/home'
+                    />
+
+
+                    <Menu.Item
+                        className='navbar__item--mobile'
+                        onClick={this.logout}
+                        content='Sair'
+                        as={Link}
                         to='/'
                     />
+
                     <Menu.Item
                         name='cliente'
                         active={this.state.activeItem === 'cliente'}
